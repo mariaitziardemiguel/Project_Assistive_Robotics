@@ -37,7 +37,6 @@ movej_init = f"movej([0, -0.4, 0.5, 1.571, 0, 0.000000],1.20000,0.75000,{timel},
 movel_app_wave = f"movel([0, -0.68, 0.5, 1.571, 0.000000, 0.000000],{accel_mss},{speed_ms},{timel},0.000)"
 movel_wave = f"movel([0, -0.68, 0.5, -2.182, 0, -1.993],{accel_mss},{speed_ms},{timel/2},0.000)"
 movel_bajada = f"movel([0.2, -0.68, 0.3, 2.819, 0, 0.940],{accel_mss},{speed_ms},{timel},0.000)"
-movel_give5 = f"movel([-2.195869, -1.642206, -2.040971, 5.253965, -1.570796, 2.195869],{accel_mss},{speed_ms},{timel/2},0.000)"
 movel_subida = f"movel([0.4, -0.68, 0.3, 1.366, 0.180, 2.688],{accel_mss},{speed_ms},{timel},0.000)"
 movel_bajada2 = f"movel([0.6, -0.68, 0.3, 2.514, 0.061, 1.593],{accel_mss},{speed_ms},{timel},0.000)"
 # Initialize UR5e socket communication
