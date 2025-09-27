@@ -15,6 +15,8 @@ Init_target = RDK.Item('Init')
 App_wave_target = RDK.Item('App_wave')
 Wave_target = RDK.Item('Wave')
 Bajada_target = RDK.Item('Bajada')
+Subida_target = RDK.Item('Subida')
+Bajada2_target = RDK.Item('Bajada2')
 
 robot.setPoseFrame(base)
 robot.setPoseTool(tool)
@@ -36,7 +38,8 @@ movel_app_wave = f"movel([0, -0.68, 0.5, 1.571, 0.000000, 0.000000],{accel_mss},
 movel_wave = f"movel([0, -0.68, 0.5, -2.182, 0, -1.993],{accel_mss},{speed_ms},{timel/2},0.000)"
 movel_bajada = f"movel([0.2, -0.68, 0.3, 2.819, 0, 0.940],{accel_mss},{speed_ms},{timel},0.000)"
 movel_give5 = f"movel([-2.195869, -1.642206, -2.040971, 5.253965, -1.570796, 2.195869],{accel_mss},{speed_ms},{timel/2},0.000)"
-
+movel_subida = f"movel([0.4, -0.68, 0.3, 1.366, 0.180, 2.688],{accel_mss},{speed_ms},{timel},0.000)"
+movel_bajada2 = f"movel([0.6, -0.68, 0.3, 2.514, 0.061, 1.593],{accel_mss},{speed_ms},{timel},0.000)"
 # Initialize UR5e socket communication
 def check_robot_port(ROBOT_IP, ROBOT_PORT):
     global robot_socket
@@ -77,6 +80,8 @@ def Hand_wave():
     robot.setSpeed(100)
     robot.MoveL(Wave_target, True)
     robot.MoveL(Bajada_target, True)
+    robot.MoveL(Subida_target, True)
+    robot.MoveL(Bajada2_target, True)
     print("Hand Wave FINISHED")
     if robot_is_connected:
         # Set the TCP pose
@@ -89,6 +94,11 @@ def Hand_wave():
         receive_response(timel)
         send_ur_script(movel_bajada)
         receive_response(timel)
+        send_ur_script(movel_subida)
+        receive_response(timel)
+        send_ur_script(movel_bajada2)
+        receive_response(timel)
+
     else:
         print("UR5e is not connected. Only simulation will take place")
 # Main function
