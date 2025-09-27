@@ -17,6 +17,14 @@ Wave_target = RDK.Item('Wave')
 Bajada_target = RDK.Item('Bajada')
 Subida_target = RDK.Item('Subida')
 Bajada2_target = RDK.Item('Bajada2')
+Dab1_target = RDK.Item('Dab1')
+Dab2_target = RDK.Item('Dab2')
+Dab3_target = RDK.Item('Dab3')
+Dab4_target = RDK.Item('Dab4')
+Dab5_target = RDK.Item('Dab5')
+Dab6_target = RDK.Item('Dab6')
+Dab7_target = RDK.Item('Dab7')
+Dab8_target = RDK.Item('Dab8')
 
 robot.setPoseFrame(base)
 robot.setPoseTool(tool)
@@ -39,6 +47,7 @@ movel_wave = f"movel([0, -0.68, 0.5, -2.182, 0, -1.993],{accel_mss},{speed_ms},{
 movel_bajada = f"movel([0.2, -0.68, 0.3, 2.819, 0, 0.940],{accel_mss},{speed_ms},{timel},0.000)"
 movel_subida = f"movel([0.4, -0.68, 0.3, 1.366, 0.180, 2.688],{accel_mss},{speed_ms},{timel},0.000)"
 movel_bajada2 = f"movel([0.6, -0.68, 0.3, 2.514, 0.061, 1.593],{accel_mss},{speed_ms},{timel},0.000)"
+
 # Initialize UR5e socket communication
 def check_robot_port(ROBOT_IP, ROBOT_PORT):
     global robot_socket
@@ -49,6 +58,7 @@ def check_robot_port(ROBOT_IP, ROBOT_PORT):
         return True
     except (socket.timeout, ConnectionRefusedError):
         return False
+
 # Send commands to the UR5e robot using socket communication
 def send_ur_script(command):
     robot_socket.send(("{}\n".format(command)).encode())
@@ -59,6 +69,8 @@ def receive_response(t):
     except socket.error as e:
         print(f"Error receiving data from the robot: {e}")
         exit(1) #Non-zero exit status code to indicate the error
+
+# Movements
 def Init():
     print("Init")
     robot.MoveL(Init_target, True)
