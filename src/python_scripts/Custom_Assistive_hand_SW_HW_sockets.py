@@ -170,19 +170,19 @@ def RCP():
         robot.MoveL(RCP_up_target, True)
     print("RCP FINISHED")
 
-def Heimlich():
-    print("Heimlich")
-    robot.setSpeed(20)
-    robot.MoveL(Out_target, True)
-    robot.setSpeed(100)
-    robot.MoveL(In_target, True)
-    robot.setSpeed(20)
-    robot.MoveL(Out_target, True)
-    robot.setSpeed(100)
-    robot.MoveL(In_target, True)
-    robot.setSpeed(20)
-    robot.MoveL(Out_target, True)
-    print("Heimlich FINISHED")
+#def Heimlich():
+    #print("Heimlich")
+    #robot.setSpeed(20)
+    #robot.MoveL(Out_target, True)
+    #robot.setSpeed(100)
+    #robot.MoveL(In_target, True)
+    #robot.setSpeed(20)
+    #robot.MoveL(Out_target, True)
+    #robot.setSpeed(100)
+    #robot.MoveL(In_target, True)
+    #robot.setSpeed(20)
+    #robot.MoveL(Out_target, True)
+    #print("Heimlich FINISHED")
 
 # Main function
 def main():
@@ -203,10 +203,10 @@ def main():
     RCP()
     time.sleep(1)
     Init()
-    time.sleep(1)
-    Heimlich()
-    time.sleep(1)
-    Init()
+    #time.sleep(1)
+    #Heimlich()
+    #time.sleep(1)
+    #Init()
     if robot_is_connected:
         robot_socket.close()   
 
