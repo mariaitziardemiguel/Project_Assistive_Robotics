@@ -11,6 +11,7 @@ RDK = Robolink()
 robot = RDK.Item("UR5e")
 base = RDK.Item("UR5e Base")
 tool = RDK.Item('Hand')
+
 Init_target = RDK.Item('Init')
 App_wave_target = RDK.Item('App_wave')
 Wave_target = RDK.Item('Wave')
@@ -21,10 +22,6 @@ Dab1_target = RDK.Item('Dab1')
 Dab2_target = RDK.Item('Dab2')
 Dab3_target = RDK.Item('Dab3')
 Dab4_target = RDK.Item('Dab4')
-Dab5_target = RDK.Item('Dab5')
-Dab6_target = RDK.Item('Dab6')
-Dab7_target = RDK.Item('Dab7')
-Dab8_target = RDK.Item('Dab8')
 
 robot.setPoseFrame(base)
 robot.setPoseTool(tool)
@@ -36,8 +33,8 @@ ROBOT_PORT = 30002 # Default port for UR robots
 accel_mss = 1.2
 speed_ms = 0.75
 blend_r = 0.0
-timej = 6# seconds to finish movej
-timel = 4# seconds to finish movel
+timej = 6 # seconds to finish movej
+timel = 4 # seconds to finish movel
 
 # Define robot movement commands as URScript strings
 set_tcp="set_tcp(p[0.000000, 0.000000, 0.050000, 0.000000, 0.000000, 0.000000])"
@@ -58,10 +55,11 @@ def check_robot_port(ROBOT_IP, ROBOT_PORT):
         return True
     except (socket.timeout, ConnectionRefusedError):
         return False
-
 # Send commands to the UR5e robot using socket communication
 def send_ur_script(command):
     robot_socket.send(("{}\n".format(command)).encode())
+
+# Wait for robot response
 def receive_response(t):
     try:
         print("Waiting time: " + str(t))
@@ -84,11 +82,12 @@ def Init():
         receive_response(timej)
     else:
         print("UR5e is not connected. Only simulation will take place")
+
 def Hand_wave():
-    print("Hand Shake")
+    print("Hand Wave")
     robot.setSpeed(20)
     robot.MoveL(App_wave_target, True)
-    robot.setSpeed(100)
+    #robot.setSpeed(100)
     robot.MoveL(Wave_target, True)
     robot.MoveL(Bajada_target, True)
     robot.MoveL(Subida_target, True)
@@ -109,17 +108,29 @@ def Hand_wave():
         receive_response(timel)
         send_ur_script(movel_bajada2)
         receive_response(timel)
-
     else:
         print("UR5e is not connected. Only simulation will take place")
+
+def Dab():
+    print("Dab!")
+    robot.MoveL(Dab1_target, True)
+    robot.MoveL(Dab2_target, True)
+    robot.MoveL(Dab3_target, True)
+    robot.MoveL(Dab4_target, True)
+    print("Dab FINISHED")
+    
 # Main function
 def main():
     global robot_is_connected
     robot_is_connected=check_robot_port(ROBOT_IP, ROBOT_PORT)
     Init()
     Hand_wave()
+    Dab()
+    Init()
     if robot_is_connected:
         robot_socket.close()   
+
+# Run and close
 if __name__ == "__main__":
     main()
-    
+    #confirm_close()
