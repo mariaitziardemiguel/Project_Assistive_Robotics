@@ -22,6 +22,18 @@ Dab1_target = RDK.Item('Dab1')
 Dab2_target = RDK.Item('Dab2')
 Dab3_target = RDK.Item('Dab3')
 Dab4_target = RDK.Item('Dab4')
+Dab5_target = RDK.Item('Dab5')
+Stop_target = RDK.Item('Stop')
+Go1_target = RDK.Item('Go1')
+Go2_target = RDK.Item('Go2')
+Go3_target = RDK.Item('Go3')
+Emergency1_target = RDK.Item('Emergency1')
+Emergency2_target = RDK.Item('Emergency2')
+Emergency3_target = RDK.Item('Emergency3')
+RCP_up_target = RDK.Item('RCP_up')
+RCP_down_target = RDK.Item('RCP_down')
+Out_target = RDK.Item('Out')
+In_target = RDK.Item('In')
 
 robot.setPoseFrame(base)
 robot.setPoseTool(tool)
@@ -71,6 +83,7 @@ def receive_response(t):
 # Movements
 def Init():
     print("Init")
+    robot.setSpeed(20)
     robot.MoveL(Init_target, True)
     print("Init_target REACHED")
     if robot_is_connected:
@@ -85,10 +98,11 @@ def Init():
 
 def Hand_wave():
     print("Hand Wave")
-    robot.setSpeed(20)
+    robot.setSpeed(40)
     robot.MoveL(App_wave_target, True)
-    #robot.setSpeed(100)
+    robot.setSpeed(10)
     robot.MoveL(Wave_target, True)
+    robot.setSpeed(30)
     robot.MoveL(Bajada_target, True)
     robot.MoveL(Subida_target, True)
     robot.MoveL(Bajada2_target, True)
@@ -117,8 +131,59 @@ def Dab():
     robot.MoveL(Dab2_target, True)
     robot.MoveL(Dab3_target, True)
     robot.MoveL(Dab4_target, True)
-    print("Dab FINISHED")
-    
+    robot.setSpeed(30)
+    robot.MoveL(Dab5_target, True)
+    print("Dab! FINISHED")
+
+def Stop_and_go():
+    print("Stop and go")
+    robot.MoveL(Stop_target, True)
+    time.sleep(2)
+    robot.MoveL(Go1_target, True)
+    robot.setSpeed(50)
+    robot.MoveL(Go2_target, True)
+    robot.MoveL(Go3_target, True)
+    robot.MoveL(Go2_target, True)
+    robot.MoveL(Go3_target, True)
+    print("Stop and go FINISHED")
+
+def Emergency():
+    print("Emergency")
+    robot.setSpeed(40)
+    robot.MoveL(Emergency1_target, True)
+    robot.setSpeed(90)
+    robot.MoveL(Emergency2_target, True)
+    robot.MoveL(Emergency3_target, True)
+    robot.MoveL(Emergency2_target, True)
+    robot.MoveL(Emergency1_target, True)
+    print("Emergency FINISHED")
+
+def RCP():
+    print("Starting RCP...")
+    robot.setSpeed(20)
+    robot.MoveL(RCP_up_target, True)
+    robot.setSpeed(100)
+    cycles = 6
+    for i in range(cycles):
+        print(f"Compression {i+1}")
+        robot.MoveL(RCP_down_target, True)
+        robot.MoveL(RCP_up_target, True)
+    print("RCP FINISHED")
+
+def Heimlich():
+    print("Heimlich")
+    robot.setSpeed(20)
+    robot.MoveL(Out_target, True)
+    robot.setSpeed(100)
+    robot.MoveL(In_target, True)
+    robot.setSpeed(20)
+    robot.MoveL(Out_target, True)
+    robot.setSpeed(100)
+    robot.MoveL(In_target, True)
+    robot.setSpeed(20)
+    robot.MoveL(Out_target, True)
+    print("Heimlich FINISHED")
+
 # Main function
 def main():
     global robot_is_connected
@@ -126,6 +191,21 @@ def main():
     Init()
     Hand_wave()
     Dab()
+    time.sleep(1)
+    Init()
+    time.sleep(1)
+    Stop_and_go()
+    time.sleep(1)
+    Init()
+    time.sleep(1)
+    Emergency()
+    time.sleep(1)
+    RCP()
+    time.sleep(1)
+    Init()
+    time.sleep(1)
+    Heimlich()
+    time.sleep(1)
     Init()
     if robot_is_connected:
         robot_socket.close()   
