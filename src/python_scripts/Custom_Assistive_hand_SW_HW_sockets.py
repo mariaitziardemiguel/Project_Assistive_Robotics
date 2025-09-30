@@ -1,8 +1,10 @@
+import os
 import time
+import socket
+import tkinter as tk
+from tkinter import messagebox
 from math import radians, degrees, pi
 import numpy as np
-import socket
-#from spatialmath.base import * 
 from robodk.robolink import *
 from robodk.robomath import *
 
@@ -50,14 +52,68 @@ timel = 4 # seconds to finish movel
 
 # Define robot movement commands as URScript strings
 set_tcp="set_tcp(p[0.000000, 0.000000, 0.050000, 0.000000, 0.000000, 0.000000])"
-movej_init = f"movej([0, -0.4, 0.5, 1.571, 0, 0.000000],1.20000,0.75000,{timel},0.0000)"
-movel_app_wave = f"movel([0, -0.68, 0.5, 1.571, 0.000000, 0.000000],{accel_mss},{speed_ms},{timel},0.000)"
-movel_wave = f"movel([0, -0.68, 0.5, -2.182, 0, -1.993],{accel_mss},{speed_ms},{timel/2},0.000)"
-movel_bajada = f"movel([0.2, -0.68, 0.3, 2.819, 0, 0.940],{accel_mss},{speed_ms},{timel},0.000)"
-movel_subida = f"movel([0.4, -0.68, 0.3, 1.366, 0.180, 2.688],{accel_mss},{speed_ms},{timel},0.000)"
-movel_bajada2 = f"movel([0.6, -0.68, 0.3, 2.514, 0.061, 1.593],{accel_mss},{speed_ms},{timel},0.000)"
 
-# Initialize UR5e socket communication
+j1, j2, j3, j4, j5, j6 = np.radians(Init_target.Joints()).tolist()[0]
+movej_init = f"movej([{j1},{j2}, {j3}, {j4}, {j5}, {j6}],1.20000,0.75000,{timel},0.0000)"
+
+j1, j2, j3, j4, j5, j6 = np.radians(App_wave_target.Joints()).tolist()[0]
+movel_app_wave = f"movel([{j1},{j2}, {j3}, {j4}, {j5}, {j6}],{accel_mss},{speed_ms},{timel},0.000)"
+
+j1, j2, j3, j4, j5, j6 = np.radians(Wave_target.Joints()).tolist()[0]
+movel_wave = f"movel([{j1},{j2}, {j3}, {j4}, {j5}, {j6}],{accel_mss},{speed_ms},{timel/2},0.000)"
+
+j1, j2, j3, j4, j5, j6 = np.radians(Bajada_target.Joints()).tolist()[0]
+movel_bajada = f"movel([{j1},{j2}, {j3}, {j4}, {j5}, {j6}],{accel_mss},{speed_ms},{timel},0.000)"
+
+j1, j2, j3, j4, j5, j6 = np.radians(Subida_target.Joints()).tolist()[0]
+movel_subida = f"movel([{j1},{j2}, {j3}, {j4}, {j5}, {j6}],{accel_mss},{speed_ms},{timel},0.000)"
+
+j1, j2, j3, j4, j5, j6 = np.radians(Bajada2_target.Joints()).tolist()[0]
+movel_bajada2 = f"movel([{j1},{j2}, {j3}, {j4}, {j5}, {j6}],{accel_mss},{speed_ms},{timel},0.000)"
+
+j1, j2, j3, j4, j5, j6 = np.radians(Dab1_target.Joints()).tolist()[0]
+movel_Dab1 = f"movel([{j1},{j2}, {j3}, {j4}, {j5}, {j6}],{accel_mss},{speed_ms},{timel},{blend_r})"
+
+j1, j2, j3, j4, j5, j6 = np.radians(Dab2_target.Joints()).tolist()[0]
+movel_Dab2 = f"movel([{j1},{j2}, {j3}, {j4}, {j5}, {j6}],{accel_mss},{speed_ms},{timel},{blend_r})"
+
+j1, j2, j3, j4, j5, j6 = np.radians(Dab3_target.Joints()).tolist()[0]
+movel_Dab3 = f"movel([{j1},{j2}, {j3}, {j4}, {j5}, {j6}],{accel_mss},{speed_ms},{timel},{blend_r})"
+
+j1, j2, j3, j4, j5, j6 = np.radians(Dab4_target.Joints()).tolist()[0]
+movel_Dab4 = f"movel([{j1},{j2}, {j3}, {j4}, {j5}, {j6}],{accel_mss},{speed_ms},{timel},{blend_r})"
+
+j1, j2, j3, j4, j5, j6 = np.radians(Dab5_target.Joints()).tolist()[0]
+movel_Dab5 = f"movel([{j1},{j2}, {j3}, {j4}, {j5}, {j6}],{accel_mss},{speed_ms},{timel},{blend_r})"
+
+j1, j2, j3, j4, j5, j6 = np.radians(Stop_target.Joints()).tolist()[0]
+movel_Stop = f"movel([{j1},{j2}, {j3}, {j4}, {j5}, {j6}],{accel_mss},{speed_ms},{timel},{blend_r})"
+
+j1, j2, j3, j4, j5, j6 = np.radians(Go1_target.Joints()).tolist()[0]
+movel_Go1 = f"movel([{j1},{j2}, {j3}, {j4}, {j5}, {j6}],{accel_mss},{speed_ms},{timel},{blend_r})"
+
+j1, j2, j3, j4, j5, j6 = np.radians(Go2_target.Joints()).tolist()[0]
+movel_Go2 = f"movel([{j1},{j2}, {j3}, {j4}, {j5}, {j6}],{accel_mss},{speed_ms},{timel},{blend_r})"
+
+j1, j2, j3, j4, j5, j6 = np.radians(Go3_target.Joints()).tolist()[0]
+movel_Go3 = f"movel([{j1},{j2}, {j3}, {j4}, {j5}, {j6}],{accel_mss},{speed_ms},{timel},{blend_r})"
+
+j1, j2, j3, j4, j5, j6 = np.radians(Emergency1_target.Joints()).tolist()[0]
+movel_Emergency1 = f"movel([{j1},{j2}, {j3}, {j4}, {j5}, {j6}],{accel_mss},{speed_ms},{timel},{blend_r})"
+
+j1, j2, j3, j4, j5, j6 = np.radians(Emergency2_target.Joints()).tolist()[0]
+movel_Emergency2 = f"movel([{j1},{j2}, {j3}, {j4}, {j5}, {j6}],{accel_mss},{speed_ms},{timel},{blend_r})"
+
+j1, j2, j3, j4, j5, j6 = np.radians(Emergency3_target.Joints()).tolist()[0]
+movel_Emergency3 = f"movel([{j1},{j2}, {j3}, {j4}, {j5}, {j6}],{accel_mss},{speed_ms},{timel},{blend_r})"
+
+j1, j2, j3, j4, j5, j6 = np.radians(RCP_up_target.Joints()).tolist()[0]
+movel_RCP_up = f"movel([{j1},{j2}, {j3}, {j4}, {j5}, {j6}],{accel_mss},{speed_ms},{timel},{blend_r})"
+
+j1, j2, j3, j4, j5, j6 = np.radians(RCP_down_target.Joints()).tolist()[0]
+movel_RCP_down = f"movel([{j1},{j2}, {j3}, {j4}, {j5}, {j6}],{accel_mss},{speed_ms},{timel},{blend_r})"
+
+# Check robot connection
 def check_robot_port(ROBOT_IP, ROBOT_PORT):
     global robot_socket
     try:
@@ -67,9 +123,9 @@ def check_robot_port(ROBOT_IP, ROBOT_PORT):
         return True
     except (socket.timeout, ConnectionRefusedError):
         return False
-# Send commands to the UR5e robot using socket communication
+# Send URScript command
 def send_ur_script(command):
-    robot_socket.send(("{}\n".format(command)).encode())
+    robot_socket.send((command + "\n").encode())
 
 # Wait for robot response
 def receive_response(t):
@@ -109,7 +165,7 @@ def Hand_wave():
     print("Hand Wave FINISHED")
     if robot_is_connected:
         # Set the TCP pose
-        print("App_shake REAL UR5e")
+        print("Hand_wave REAL UR5e")
         send_ur_script(set_tcp)
         receive_response(1)
         send_ur_script(movel_app_wave)
@@ -134,6 +190,20 @@ def Dab():
     robot.setSpeed(30)
     robot.MoveL(Dab5_target, True)
     print("Dab! FINISHED")
+    if robot_is_connected:
+        print("Dab REAL UR5e")
+        send_ur_script(set_tcp)
+        receive_response(1)
+        send_ur_script(movel_Dab1)
+        receive_response(timel)
+        send_ur_script(movel_Dab2)
+        receive_response(timel)
+        send_ur_script(movel_Dab3)
+        receive_response(timel)
+        send_ur_script(movel_Dab4)
+        receive_response(timel)
+        send_ur_script(movel_Dab5)
+        receive_response(timel)
 
 def Stop_and_go():
     print("Stop and go")
@@ -146,6 +216,22 @@ def Stop_and_go():
     robot.MoveL(Go2_target, True)
     robot.MoveL(Go3_target, True)
     print("Stop and go FINISHED")
+    if robot_is_connected:
+        print("Stop_and_go REAL UR5e")
+        send_ur_script(set_tcp)
+        receive_response(1)
+        send_ur_script(movel_Stop)
+        receive_response(timel)
+        send_ur_script(movel_Go1)
+        receive_response(timel)
+        send_ur_script(movel_Go2)
+        receive_response(timel)
+        send_ur_script(movel_Go3)
+        receive_response(timel)
+        send_ur_script(movel_Go2)
+        receive_response(timel)
+        send_ur_script(movel_Go3)
+        receive_response(timel)
 
 def Emergency():
     print("Emergency")
@@ -157,6 +243,20 @@ def Emergency():
     robot.MoveL(Emergency2_target, True)
     robot.MoveL(Emergency1_target, True)
     print("Emergency FINISHED")
+    if robot_is_connected:
+        print("Emergency REAL UR5e")
+        send_ur_script(set_tcp)
+        receive_response(1)
+        send_ur_script(movel_Emergency1)
+        receive_response(timel)
+        send_ur_script(movel_Emergency2)
+        receive_response(timel)
+        send_ur_script(movel_Emergency3)
+        receive_response(timel)
+        send_ur_script(movel_Emergency2)
+        receive_response(timel)
+        send_ur_script(movel_Emergency1)
+        receive_response(timel)
 
 def RCP():
     print("Starting RCP...")
@@ -169,6 +269,17 @@ def RCP():
         robot.MoveL(RCP_down_target, True)
         robot.MoveL(RCP_up_target, True)
     print("RCP FINISHED")
+    if robot_is_connected:
+        print("RCP REAL UR5e")
+        send_ur_script(set_tcp)
+        receive_response(1)
+        send_ur_script(movel_RCP_up)
+        receive_response(timel)
+        for i in range(cycles):
+            send_ur_script(movel_RCP_down)
+            receive_response(timel)
+            send_ur_script(movel_RCP_up)
+            receive_response(timel)
 
 #def Heimlich():
     #print("Heimlich")
@@ -209,6 +320,23 @@ def main():
     #Init()
     if robot_is_connected:
         robot_socket.close()   
+
+# Confirmation dialog to close RoboDK
+def confirm_close():
+    root = tk.Tk()
+    root.withdraw()
+    response = messagebox.askquestion(
+        "Close RoboDK",
+        "Do you want to save changes before closing RoboDK?",
+        icon='question'
+    )
+    if response == 'yes':
+        RDK.Save()
+        RDK.CloseRoboDK()
+        print("RoboDK saved and closed.")
+    else:
+        RDK.CloseRoboDK()
+        print("RoboDK closed without saving.")
 
 # Run and close
 if __name__ == "__main__":
