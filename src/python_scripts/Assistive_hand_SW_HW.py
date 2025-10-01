@@ -6,10 +6,10 @@ from robodk.robolink import *
 from robodk.robomath import *
 
 # Define relative path to the .rdk file
-relative_path = "src/roboDK/Assistive_UR5e.rdk"
+relative_path = "src/roboDK/Custom_Assistive_UR5e.rdk"
 absolute_path = os.path.abspath(relative_path)
 
-# Start RoboDK with the project file
+# Start RoboDK with the project fileS
 RDK = Robolink()
 RDK.AddFile(absolute_path)
 
@@ -18,23 +18,14 @@ robot = RDK.Item("UR5e")
 base = RDK.Item("UR5e Base")
 tool = RDK.Item('Hand')
 Init_target = RDK.Item('Init')
-App_wave_target = RDK.Item('App_wave')
-Wave_target = RDK.Item('Wave')
 Bajada_target = RDK.Item('Bajada')
 Subida_target = RDK.Item('Subida')
 Bajada2_target = RDK.Item('Bajada2')
-Dab1_target = RDK.Item('Dab1')
-Dab2_target = RDK.Item('Dab2')
-Dab3_target = RDK.Item('Dab3')
-Dab4_target = RDK.Item('Dab4')
 Dab5_target = RDK.Item('Dab5')
 Stop_target = RDK.Item('Stop')
 Go1_target = RDK.Item('Go1')
 Go2_target = RDK.Item('Go2')
 Go3_target = RDK.Item('Go3')
-Emergency1_target = RDK.Item('Emergency1')
-Emergency2_target = RDK.Item('Emergency2')
-Emergency3_target = RDK.Item('Emergency3')
 RCP_up_target = RDK.Item('RCP_up')
 RCP_down_target = RDK.Item('RCP_down')
 Out_target = RDK.Item('Out')
@@ -72,10 +63,6 @@ def Init():
 
 def Hand_wave():
     print("Hand Wave")
-    robot.setSpeed(40)
-    robot.MoveL(App_wave_target, True)
-    robot.setSpeed(10)
-    robot.MoveL(Wave_target, True)
     robot.setSpeed(30)
     robot.MoveL(Bajada_target, True)
     robot.MoveL(Subida_target, True)
@@ -83,11 +70,6 @@ def Hand_wave():
     print("Hand Wave FINISHED")
     
 def Dab():
-    print("Dab!")
-    robot.MoveL(Dab1_target, True)
-    robot.MoveL(Dab2_target, True)
-    robot.MoveL(Dab3_target, True)
-    robot.MoveL(Dab4_target, True)
     robot.setSpeed(30)
     robot.MoveL(Dab5_target, True)
     print("Dab! FINISHED")
@@ -104,17 +86,6 @@ def Stop_and_go():
     robot.MoveL(Go3_target, True)
     print("Stop and go FINISHED")
 
-def Emergency():
-    print("Emergency")
-    robot.setSpeed(40)
-    robot.MoveL(Emergency1_target, True)
-    robot.setSpeed(90)
-    robot.MoveL(Emergency2_target, True)
-    robot.MoveL(Emergency3_target, True)
-    robot.MoveL(Emergency2_target, True)
-    robot.MoveL(Emergency1_target, True)
-    print("Emergency FINISHED")
-
 def RCP():
     print("Starting RCP...")
     robot.setSpeed(20)
@@ -126,20 +97,6 @@ def RCP():
         robot.MoveL(RCP_down_target, True)
         robot.MoveL(RCP_up_target, True)
     print("RCP FINISHED")
-
-#def Heimlich():
-    #print("Heimlich")
-    #robot.setSpeed(20)
-    #robot.MoveL(Out_target, True)
-    #robot.setSpeed(100)
-    #robot.MoveL(In_target, True)
-    #robot.setSpeed(20)
-    #robot.MoveL(Out_target, True)
-    #robot.setSpeed(100)
-    #robot.MoveL(In_target, True)
-    #robot.setSpeed(20)
-    #robot.MoveL(Out_target, True)
-    #print("Heimlich FINISHED")
 
 # Confirmation dialog to close RoboDK
 def confirm_close():
@@ -161,9 +118,17 @@ def confirm_close():
 # Main function
 def main():
     robot_online(False)  # True for real robot, False for simulation
-    move_to_init()
-    hand_shake()
-    give_me_5()
+    Init()
+    time.sleep(1)
+    Hand_wave()
+    time.sleep(1)
+    Stop_and_go()
+    time.sleep(1)
+    RCP()
+    time.sleep(1)
+    Dab()
+    time.sleep(1)
+    Init()
 
 # Run main and handle closing
 if __name__ == "__main__":

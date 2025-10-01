@@ -8,6 +8,11 @@ import numpy as np
 from robodk.robolink import *
 from robodk.robomath import *
 
+#Load the RoboDK project
+relative_path = "src/roboDK/Custom_Assistive_UR5e.rdk"
+absolute_path = os.path.abspath(relative_path)
+RDK = Robolink()
+RDK.AddFile(absolute_path)
 # Robot setup
 RDK = Robolink()
 robot = RDK.Item("UR5e")
