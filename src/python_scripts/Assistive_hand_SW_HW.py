@@ -11,7 +11,11 @@ absolute_path = os.path.abspath(relative_path)
 
 # Start RoboDK with the project fileS
 RDK = Robolink()
+print("Loading RoboDK...")
+time.sleep(5)
 RDK.AddFile(absolute_path)
+print("Loading RoboDK Project...")
+time.sleep(3)
 
 # Retrieve items from the RoboDK station
 robot = RDK.Item("UR5e")
@@ -39,6 +43,7 @@ robot.setSpeed(50)
 
 # Connect to real robot or simulate
 def robot_online(online):
+    print("Connecting to UR5e...")
     if online:
         robot.setConnectionParams('192.168.1.5', 30000, '/', 'anonymous', '')
         time.sleep(5)
@@ -134,3 +139,4 @@ def main():
 if __name__ == "__main__":
     main()
     #confirm_close()
+

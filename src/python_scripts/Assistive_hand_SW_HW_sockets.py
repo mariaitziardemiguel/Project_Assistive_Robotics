@@ -111,4 +111,5 @@ def main():
         robot_socket.close()   
 if __name__ == "__main__":
     main()
-    
+    #confirm_close()
+    RDK.CloseRoboDK()
