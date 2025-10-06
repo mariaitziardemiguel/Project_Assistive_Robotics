@@ -11,10 +11,10 @@ from robodk.robomath import *
 #Load the RoboDK project
 relative_path = "src/roboDK/Custom_Assistive_UR5e.rdk"
 absolute_path = os.path.abspath(relative_path)
-RDK = Robolink()
-RDK.AddFile(absolute_path)
 # Robot setup
 RDK = Robolink()
+time.sleep(5) # Wait for RoboDK to load
+RDK.AddFile(absolute_path)
 robot = RDK.Item("UR5e")
 base = RDK.Item("UR5e Base")
 tool = RDK.Item('Hand')
@@ -149,14 +149,6 @@ def Dab():
         print("Dab REAL UR5e")
         send_ur_script(set_tcp)
         receive_response(1)
-        send_ur_script(movel_Dab1)
-        receive_response(timel)
-        send_ur_script(movel_Dab2)
-        receive_response(timel)
-        send_ur_script(movel_Dab3)
-        receive_response(timel)
-        send_ur_script(movel_Dab4)
-        receive_response(timel)
         send_ur_script(movel_Dab5)
         receive_response(timel)
 
@@ -216,15 +208,10 @@ def main():
     global robot_is_connected
     robot_is_connected=check_robot_port(ROBOT_IP, ROBOT_PORT)
     Init()
-    time.sleep(1)
     Hand_wave()
-    time.sleep(1)
     Stop_and_go()
-    time.sleep(1)
     RCP()
-    time.sleep(1)
     Dab()
-    time.sleep(1)
     Init()
     if robot_is_connected:
         robot_socket.close()   
@@ -250,3 +237,4 @@ def confirm_close():
 if __name__ == "__main__":
     main()
     #confirm_close()
+    RDK.CloseRoboDK()
