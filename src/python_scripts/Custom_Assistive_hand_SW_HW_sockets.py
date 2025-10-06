@@ -27,8 +27,6 @@ Stop_target = RDK.Item('Stop')
 Go1_target = RDK.Item('Go1')
 Go2_target = RDK.Item('Go2')
 Go3_target = RDK.Item('Go3')
-RCP_up_target = RDK.Item('RCP_up')
-RCP_down_target = RDK.Item('RCP_down')
 Dab5_target = RDK.Item('Dab5')
 
 robot.setPoseFrame(base)
