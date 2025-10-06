@@ -74,12 +74,6 @@ movel_Go2 = f"movel([{j1},{j2}, {j3}, {j4}, {j5}, {j6}],{accel_mss},{speed_ms},{
 j1, j2, j3, j4, j5, j6 = np.radians(Go3_target.Joints()).tolist()[0]
 movel_Go3 = f"movel([{j1},{j2}, {j3}, {j4}, {j5}, {j6}],{accel_mss},{speed_ms},{timel},{blend_r})"
 
-j1, j2, j3, j4, j5, j6 = np.radians(RCP_up_target.Joints()).tolist()[0]
-movel_RCP_up = f"movel([{j1},{j2}, {j3}, {j4}, {j5}, {j6}],{accel_mss},{speed_ms},{timel},{blend_r})"
-
-j1, j2, j3, j4, j5, j6 = np.radians(RCP_down_target.Joints()).tolist()[0]
-movel_RCP_down = f"movel([{j1},{j2}, {j3}, {j4}, {j5}, {j6}],{accel_mss},{speed_ms},{timel},{blend_r})"
-
 # Check robot connection
 def check_robot_port(ROBOT_IP, ROBOT_PORT):
     global robot_socket
@@ -180,29 +174,6 @@ def Stop_and_go():
         send_ur_script(movel_Go3)
         receive_response(timel)
 
-def RCP():
-    print("Starting RCP...")
-    robot.setSpeed(20)
-    robot.MoveL(RCP_up_target, True)
-    robot.setSpeed(100)
-    cycles = 6
-    for i in range(cycles):
-        print(f"Compression {i+1}")
-        robot.MoveL(RCP_down_target, True)
-        robot.MoveL(RCP_up_target, True)
-    print("RCP FINISHED")
-    if robot_is_connected:
-        print("RCP REAL UR5e")
-        send_ur_script(set_tcp)
-        receive_response(1)
-        send_ur_script(movel_RCP_up)
-        receive_response(timel)
-        for i in range(cycles):
-            send_ur_script(movel_RCP_down)
-            receive_response(timel)
-            send_ur_script(movel_RCP_up)
-            receive_response(timel)
-
 # Main function
 def main():
     global robot_is_connected
@@ -210,7 +181,6 @@ def main():
     Init()
     Hand_wave()
     Stop_and_go()
-    RCP()
     Dab()
     Init()
     if robot_is_connected:
