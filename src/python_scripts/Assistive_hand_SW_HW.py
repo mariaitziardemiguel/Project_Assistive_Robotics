@@ -91,18 +91,6 @@ def Stop_and_go():
     robot.MoveL(Go3_target, True)
     print("Stop and go FINISHED")
 
-def RCP():
-    print("Starting RCP...")
-    robot.setSpeed(20)
-    robot.MoveL(RCP_up_target, True)
-    robot.setSpeed(100)
-    cycles = 6
-    for i in range(cycles):
-        print(f"Compression {i+1}")
-        robot.MoveL(RCP_down_target, True)
-        robot.MoveL(RCP_up_target, True)
-    print("RCP FINISHED")
-
 # Confirmation dialog to close RoboDK
 def confirm_close():
     root = tk.Tk()
@@ -128,8 +116,6 @@ def main():
     Hand_wave()
     time.sleep(1)
     Stop_and_go()
-    time.sleep(1)
-    RCP()
     time.sleep(1)
     Dab()
     time.sleep(1)
